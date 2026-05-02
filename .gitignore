@@ -21,3 +21,10 @@ yarn-error.log*
 
 # local-only docs (handoff materials)
 .handoff/
+
+# playwright
+playwright-report/
+test-results/
+
+# claude code per-user local settings
+.claude/settings.local.json

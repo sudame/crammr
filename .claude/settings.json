@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(npx playwright *)",
+      "Bash(npm install *)",
+      "Bash(npm view *)",
+      "mcp__playwright__*"
+    ]
+  }
+}
