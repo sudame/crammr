@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Countdown } from "./components/Countdown";
-import { DailyQuotaPanel } from "./components/DailyQuotaPanel";
 import { PlanForm } from "./components/PlanForm";
 import { PlanSwitcher } from "./components/PlanSwitcher";
+import { PlanWorkspace } from "./components/PlanWorkspace";
 import { EXAM_DATE } from "./lib/countdown";
 import {
   getActivePlanId,
@@ -57,7 +57,7 @@ export function App() {
       </header>
       <h1>crammr</h1>
       <PlanForm onSubmit={handleSubmit} />
-      {activePlan && <DailyQuotaPanel planId={activePlan.id} />}
+      {activePlan && <PlanWorkspace planId={activePlan.id} />}
     </>
   );
 }

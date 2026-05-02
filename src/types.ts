@@ -11,3 +11,21 @@ export type DailyQuota = {
   declared: number;
   achieved: number;
 };
+
+export type Problem = {
+  id: string;
+  planId: string;
+  statement: string;
+  answer: string;
+  explanation: string;
+  category: string;
+  pattern: string;
+};
+
+export type Attempt = {
+  id: string;
+  planId: string;
+  problemId: string;
+  correct: boolean;
+  timestamp: number;
+};
