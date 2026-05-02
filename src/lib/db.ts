@@ -25,19 +25,23 @@ interface CrammrDB extends DBSchema {
   attempts: {
     key: string;
     value: Attempt;
-    indexes: { "by-plan": string; "by-problem": string };
+    indexes: {
+      "by-plan": string;
+      "by-problem": string;
+      "by-identifier": [string, string];
+    };
   };
 }
 
 const DB_NAME = "crammr";
-const DB_VERSION = 4;
+const DB_VERSION = 5;
 
 let dbPromise: Promise<IDBPDatabase<CrammrDB>> | null = null;
 
 function getDb(): Promise<IDBPDatabase<CrammrDB>> {
   if (!dbPromise) {
     dbPromise = openDB<CrammrDB>(DB_NAME, DB_VERSION, {
-      upgrade(db, oldVersion) {
+      upgrade(db, oldVersion, _newVersion, tx) {
         if (oldVersion < 1) {
           db.createObjectStore("plans", { keyPath: "id" });
         }
@@ -58,6 +62,12 @@ function getDb(): Promise<IDBPDatabase<CrammrDB>> {
           });
           attempts.createIndex("by-plan", "planId");
           attempts.createIndex("by-problem", "problemId");
+        }
+        if (oldVersion < 5) {
+          tx.objectStore("attempts").createIndex(
+            "by-identifier",
+            ["planId", "identifier"],
+          );
         }
       },
     });
@@ -119,4 +129,9 @@ export async function listAttemptsByProblem(
 ): Promise<Attempt[]> {
   const db = await getDb();
   return db.getAllFromIndex("attempts", "by-problem", problemId);
+}
+
+export async function listAttemptsByPlan(planId: string): Promise<Attempt[]> {
+  const db = await getDb();
+  return db.getAllFromIndex("attempts", "by-plan", planId);
 }
