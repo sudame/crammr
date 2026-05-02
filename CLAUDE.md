@@ -44,6 +44,12 @@ crammr は短期集中型・学習モチベーション維持アプリ(第一利
 
 ヘルプは `gwq <subcommand> --help`。サブコマンド: `add`, `cd`, `exec`, `get`, `list`, `remove`, `prune`, `status`, `tmux`, `config`, `completion`。
 
+### Claude の作業手順
+
+- **`gwq cd` は使わない**(fuzzy finder + 新シェルは人間向け)
+- worktree を切ったら `gwq get <pattern>` でパスを取得し、`aicd <path>` で移動して直接作業する
+- 一発実行で済む場合は `gwq exec <pattern> -- <cmd>` でも可
+
 ### サブエージェント
 
 サブエージェントを起動するときは Agent ツールの `isolation: "worktree"` を既定で指定する(同じ working tree を共有しない)。
