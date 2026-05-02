@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
-import { computeRemaining, EXAM_DATE } from "../lib/countdown";
+import { computeRemaining } from "../lib/countdown";
 
-export function Countdown() {
+type Props = {
+  examDate: Date;
+};
+
+export function Countdown({ examDate }: Props) {
   const [now, setNow] = useState(() => new Date());
 
   useEffect(() => {
@@ -9,7 +13,7 @@ export function Countdown() {
     return () => clearInterval(id);
   }, []);
 
-  const r = computeRemaining(EXAM_DATE, now);
+  const r = computeRemaining(examDate, now);
 
   if (r.isExamDay) {
     return (
