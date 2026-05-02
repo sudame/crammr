@@ -23,6 +23,7 @@ crammr は短期集中型・学習モチベーション維持アプリ(第一利
 - スクラム運用(20 分スプリント + 10 分セレモニー、Daily Scrum 省略): `docs/workflow/README.md` を参照
 - `.handoff/` ディレクトリは引継ぎ専用・gitignore 対象。コミットしない
 - スプリントの記録(plan / retrospective)は `docs/workflow/sprints/<N>/` 配下に書く
+- UI を変更したら Playwright MCP でブラウザを開いて挙動とスクショを確認し、結果を Sprint Review で共有する
 
 ## 注意
 
