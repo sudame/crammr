@@ -15,6 +15,7 @@ import type { Plan } from "./types";
 export function App() {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [planManagementOpen, setPlanManagementOpen] = useState(false);
 
   useEffect(() => {
     Promise.all([listPlans(), getActivePlanId()]).then(([loaded, savedId]) => {
@@ -24,6 +25,7 @@ export function App() {
       } else if (loaded.length > 0) {
         setActiveId(loaded[loaded.length - 1].id);
       }
+      setPlanManagementOpen(loaded.length === 0);
     });
   }, []);
 
@@ -46,52 +48,48 @@ export function App() {
   return (
     <>
       <header data-app-header>
-        <h1>crammr</h1>
-        <p data-app-tagline>短期集中で試験当日に走り切るための学習モチベーション維持アプリ</p>
-        <div style={{ marginTop: 12 }}>
-          <Countdown examDate={examDate} />
-          {activePlan && <div data-testid="plan-name">{activePlan.name}</div>}
-        </div>
-        {hasPlans && (
-          <div style={{ marginTop: 12 }}>
-            <label>
-              アクティブなプラン
-              <PlanSwitcher
-                plans={plans}
-                activePlanId={activeId}
-                onChange={handleSwitch}
-              />
-            </label>
-          </div>
-        )}
+        <Countdown examDate={examDate} />
+        {activePlan && <div data-testid="plan-name">{activePlan.name}</div>}
       </header>
 
       <main data-app-main>
-        <section data-testid="plan-section">
-          <h2>{hasPlans ? "プランを追加" : "まずはプランを作成しましょう"}</h2>
-          {!hasPlans && (
-            <p>
-              試験名と試験日を入力すると、上のヘッダーに残り時間のカウントダウンが表示されます。
-              複数の試験を並行して管理することもできます。
-            </p>
-          )}
-          <PlanForm onSubmit={handleSubmit} />
-        </section>
-
         {activePlan ? (
           <PlanWorkspace planId={activePlan.id} />
         ) : (
-          <section>
-            <h2>日々の運用と演習</h2>
-            <div data-testid="empty-state">
-              プランを 1 つ作成すると、当日ノルマの宣誓・達成記録、問題プールへの追加、ランダム 1 問演習が使えるようになります。
-            </div>
+          <section data-testid="empty-state">
+            <p>
+              まずはプランを作成しましょう。下の「プラン管理」を開いて、試験名と試験日を入力してください。
+            </p>
           </section>
         )}
+
+        <details
+          data-testid="plan-management"
+          open={planManagementOpen}
+          onToggle={(e) =>
+            setPlanManagementOpen((e.currentTarget as HTMLDetailsElement).open)
+          }
+        >
+          <summary>プラン管理</summary>
+          <div data-testid="plan-management-body">
+            {hasPlans && (
+              <label>
+                アクティブなプラン
+                <PlanSwitcher
+                  plans={plans}
+                  activePlanId={activeId}
+                  onChange={handleSwitch}
+                />
+              </label>
+            )}
+            <h2>{hasPlans ? "プランを追加" : "プランを作成"}</h2>
+            <PlanForm onSubmit={handleSubmit} />
+          </div>
+        </details>
       </main>
 
       <footer data-app-footer>
-        <a href="https://github.com/sudame/crammr">sudame/crammr</a>
+        <a href="https://github.com/sudame/crammr">crammr</a>
       </footer>
     </>
   );
