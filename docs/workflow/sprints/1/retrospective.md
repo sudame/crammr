@@ -45,3 +45,14 @@ main にマージ済:
 
 - gh 認証情報を `sudame-bot` に切替、Project への招待で Project API も Claude 側から操作可能に。Sprint 2 以降は Project ステータス遷移も Claude が実施
 - Sprint 1 内に PBI 1 個 + リファインメント + Sprint 1 polish の 2 PR まで通せた。20 分というスパンで Claude がやれる量の参考データになる
+
+## Sprint Review で受領した PO 観点(追記)
+
+- **Keep**: GitHub Actions の自動デプロイというコミットメントを守れた点は嬉しい
+- **Problem**: 時間が余っているように見えた。余裕があるならもう少し機能(user-visible)が拡充された状態になっていてほしかった
+- **要望(新規 PBI)**: PR ごとにプレビュー環境があると、PO として成果物を PR 単位でレビューしやすい
+
+### 上記を踏まえた Claude 側の追加観点
+
+- Sprint Planning で Goal を小さく取りすぎた(Claude の速度では 4 分で達成可能な規模だった)
+- 余り時間で polish に寄せたが、PO は user-visible 機能の拡充を期待していた。次回は Goal の「ストレッチ感」を意識する
