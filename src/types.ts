@@ -25,7 +25,12 @@ export type Problem = {
 export type Attempt = {
   id: string;
   planId: string;
-  problemId: string;
+  identifier: string;
   correct: boolean;
   timestamp: number;
+  category?: string;
+  pattern?: string;
+  memo?: string;
+  durationMs?: number;
+  problemId?: string;
 };

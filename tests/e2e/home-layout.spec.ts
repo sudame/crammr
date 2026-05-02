@@ -15,7 +15,7 @@ test("初回起動: プラン管理が展開され、empty-state が表示され
 
   // ノルマ・演習はプラン未作成のため非表示
   await expect(page.getByTestId("daily-quota")).toHaveCount(0);
-  await expect(page.getByTestId("practice")).toHaveCount(0);
+  await expect(page.getByTestId("attempt-form")).toHaveCount(0);
 });
 
 test("プランあり: プラン管理が折りたたまれ、ノルマ・演習が最上位コンテンツになる", async ({
@@ -29,7 +29,7 @@ test("プランあり: プラン管理が折りたたまれ、ノルマ・演習
 
   await expect(page.getByTestId("plan-name")).toHaveText("簿記");
   await expect(page.getByTestId("daily-quota")).toBeVisible();
-  await expect(page.getByTestId("practice")).toBeVisible();
+  await expect(page.getByTestId("attempt-form")).toBeVisible();
 
   // リロードで折りたたみ状態を確認(プランがあるので閉じている)
   await page.reload();

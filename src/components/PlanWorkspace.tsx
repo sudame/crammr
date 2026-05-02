@@ -1,39 +1,31 @@
 import { useEffect, useState } from "react";
-import {
-  listProblems,
-  saveAttempt,
-  saveProblem,
-} from "../lib/db";
-import type { Attempt, Problem } from "../types";
+import { listAttemptsByPlan, saveAttempt } from "../lib/db";
+import type { Attempt } from "../types";
+import { AttemptForm } from "./AttemptForm";
+import { AttemptList } from "./AttemptList";
 import { DailyQuotaPanel } from "./DailyQuotaPanel";
-import { Practice } from "./Practice";
-import { ProblemForm } from "./ProblemForm";
 
 type Props = {
   planId: string;
 };
 
 export function PlanWorkspace({ planId }: Props) {
-  const [problems, setProblems] = useState<Problem[]>([]);
+  const [attempts, setAttempts] = useState<Attempt[]>([]);
 
   useEffect(() => {
-    listProblems(planId).then(setProblems);
+    listAttemptsByPlan(planId).then(setAttempts);
   }, [planId]);
-
-  const handleAddProblem = async (p: Problem) => {
-    await saveProblem(p);
-    setProblems((prev) => [...prev, p]);
-  };
 
   const handleAttempt = async (a: Attempt) => {
     await saveAttempt(a);
+    setAttempts((prev) => [...prev, a]);
   };
 
   return (
     <>
       <DailyQuotaPanel planId={planId} />
-      <ProblemForm planId={planId} onAdded={handleAddProblem} />
-      <Practice problems={problems} onAttempt={handleAttempt} />
+      <AttemptForm planId={planId} onSubmit={handleAttempt} />
+      <AttemptList attempts={attempts} />
     </>
   );
 }
