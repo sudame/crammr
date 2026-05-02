@@ -1,3 +1,12 @@
+import { Countdown } from "./components/Countdown";
+
 export function App() {
-  return <h1>crammr</h1>;
+  return (
+    <>
+      <header>
+        <Countdown />
+      </header>
+      <h1>crammr</h1>
+    </>
+  );
 }
