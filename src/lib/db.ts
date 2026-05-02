@@ -1,5 +1,5 @@
 import { openDB, type DBSchema, type IDBPDatabase } from "idb";
-import type { Plan } from "../types";
+import type { DailyQuota, Plan } from "../types";
 
 type SettingEntry = { key: string; value: string };
 
@@ -12,10 +12,15 @@ interface CrammrDB extends DBSchema {
     key: string;
     value: SettingEntry;
   };
+  quotas: {
+    key: string;
+    value: DailyQuota;
+    indexes: { "by-plan-date": [string, string] };
+  };
 }
 
 const DB_NAME = "crammr";
-const DB_VERSION = 2;
+const DB_VERSION = 3;
 
 let dbPromise: Promise<IDBPDatabase<CrammrDB>> | null = null;
 
@@ -28,6 +33,10 @@ function getDb(): Promise<IDBPDatabase<CrammrDB>> {
         }
         if (oldVersion < 2) {
           db.createObjectStore("settings", { keyPath: "key" });
+        }
+        if (oldVersion < 3) {
+          const store = db.createObjectStore("quotas", { keyPath: "id" });
+          store.createIndex("by-plan-date", ["planId", "date"]);
         }
       },
     });
@@ -54,4 +63,17 @@ export async function getActivePlanId(): Promise<string | null> {
   const db = await getDb();
   const entry = await db.get("settings", "activePlanId");
   return entry?.value ?? null;
+}
+
+export async function saveQuota(quota: DailyQuota): Promise<void> {
+  const db = await getDb();
+  await db.put("quotas", quota);
+}
+
+export async function getQuota(
+  planId: string,
+  date: string,
+): Promise<DailyQuota | undefined> {
+  const db = await getDb();
+  return db.getFromIndex("quotas", "by-plan-date", [planId, date]);
 }
