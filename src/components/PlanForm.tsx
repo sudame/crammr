@@ -13,6 +13,7 @@ export function PlanForm({ onSubmit }: Props) {
     e.preventDefault();
     if (!name || !examDate) return;
     onSubmit({
+      id: crypto.randomUUID(),
       name,
       examDate: new Date(`${examDate}T00:00:00+09:00`),
     });
